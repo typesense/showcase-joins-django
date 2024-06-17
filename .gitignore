@@ -1,0 +1,5 @@
+venv/
+f1/__pycache__
+__pycache__/
+.env
+typesense-data
