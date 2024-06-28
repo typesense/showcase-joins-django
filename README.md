@@ -5,7 +5,7 @@ This is a demo that shows how you can use [Typesense](https://github.com/typesen
 ## Tech Stack
 
 The app was built using [Django](https://www.djangoproject.com/), utilizing the [Django REST framework](https://www.django-rest-framework.org/) for the backend, along with the <a href="https://github.com/typesense/typesense-instantsearch-adapter" target="_blank">
-Typesense Adapter for instantsearchjs</a>, and a [Vite](https://vitejs.dev/) bundled React frontend.
+Typesense Adapter for instantsearchjs</a>, and a [Vite](https://vitejs.dev/) bundled React frontend, with routing from [React Router](https://reactrouter.com/en/main).
 
 ## Development
 
