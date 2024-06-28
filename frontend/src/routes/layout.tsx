@@ -6,6 +6,11 @@ import type { NavItemProps } from "@/components/sidenav";
 import { Icons } from "@/components/icons";
 
 const items: NavItemProps[] = [
+  {
+    label: "Home",
+    Icon: Home,
+    to: "/",
+  },
 ];
 
 const RootLayout = () => (
