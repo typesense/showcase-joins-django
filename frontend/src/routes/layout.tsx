@@ -16,6 +16,11 @@ const items: NavItemProps[] = [
     Icon: User,
     to: "/drivers",
   },
+  {
+    label: "Teams",
+    Icon: ShieldHalf,
+    to: "/teams",
+  },
 ];
 
 const RootLayout = () => (
