@@ -7,7 +7,6 @@ For more information on this file, see
 https://docs.djangoproject.com/en/5.0/topics/settings/
 
 For the full list of settings and their values, see
-https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
@@ -19,7 +18,7 @@ env = environ.Env(
 )
 
 
-# Set the project base directory
+# Set the project base irectory
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Take environment variables from .env file
@@ -35,6 +34,10 @@ SECRET_KEY = env("SECRET_KEY")
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
+TYPESENSE_HOST = env("TYPESENSE_HOST")
+TYPESENSE_PORT = env("TYPESENSE_PORT")
+TYPESENSE_PROTOCOL = env("TYPESENSE_PROTOCOL")
+TYPESENSE_API_KEY = env("TYPESENSE_API_KEY")
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "results.middleware.TypesenseClientMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
