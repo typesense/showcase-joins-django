@@ -11,6 +11,11 @@ const items: NavItemProps[] = [
     Icon: Home,
     to: "/",
   },
+  {
+    label: "Drivers",
+    Icon: User,
+    to: "/drivers",
+  },
 ];
 
 const RootLayout = () => (
