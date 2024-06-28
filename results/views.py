@@ -4,8 +4,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Circuit, Driver
-from .serializers import CircuitSerializer, DriverSerializer
+from .models import Circuit, Driver, Team
+from .serializers import CircuitSerializer, DriverSerializer, TeamSerializer
 
 
 def get_query_parameters(request):
@@ -139,5 +139,37 @@ class DriverList(generics.ListAPIView):
 class DriverDetail(generics.RetrieveAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
+
+
+class TeamSearch(APIView):
+    client = apps.get_app_config("results").client
+
+    def get(self, request):
+        try:
+            parameters = get_query_parameters(request)
+            collection = self.client.collections["team"].retrieve()
+            fields = collection["fields"]
+
+            validate_query_parameters(parameters, fields)
+            sortable_fields = get_sortable_fields(fields)
+            validate_sort_parameters(parameters, sortable_fields)
+
+            result = search_documents(self.client, "team", parameters)
+
+            return Response(result)
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TeamList(generics.ListAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+
+
+class TeamDetail(generics.RetrieveAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+
+
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")

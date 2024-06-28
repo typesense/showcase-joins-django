@@ -1,9 +1,33 @@
 from rest_framework import serializers
 
-from .models import Circuit, Driver
+from .models import Circuit, Driver, Team
+
+
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ["id", "ref", "name", "nationality", "url"]
+
+    def create(self, validated_data):
+        """
+        Create and return a new `Team` instance, given the validated data.
+        """
+        return Team.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        """
+        Update and return an existing `Team` instance, given the validated data.
+        """
+        instance.ref = validated_data.get("ref", instance.ref)
+        instance.name = validated_data.get("name", instance.name)
+        instance.nationality = validated_data.get("nationality", instance.nationality)
+        instance.url = validated_data.get("url", instance.url)
+        instance.save()
+        return instance
 
 
 class CircuitSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Circuit
         fields = [
@@ -26,7 +50,7 @@ class CircuitSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         """
-        Update and return an existing `Driver` instance, given the validated data.
+        Update and return an existing `Circuit` instance, given the validated data.
         """
         instance.name = validated_data.get("name", instance.name)
         instance.ref = validated_data.get("ref", instance.ref)
