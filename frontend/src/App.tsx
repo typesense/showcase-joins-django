@@ -4,6 +4,7 @@ import DriverDetails from "./routes/driver-details";
 import HomePage from "./routes/home";
 import RootLayout from "./routes/layout";
 import Team from "./routes/team";
+import TeamDetails from "./routes/team-details";
 import ErrorPage from "./error-page";
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/teams",
         element: <Team />,
+      },
+      {
+        path: "/teams/:id",
+        element: <TeamDetails />,
       },
     ],
   },
