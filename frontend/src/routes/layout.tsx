@@ -21,6 +21,11 @@ const items: NavItemProps[] = [
     Icon: ShieldHalf,
     to: "/teams",
   },
+  {
+    label: "Circuits",
+    Icon: Icons.monza,
+    to: "/circuits",
+  },
 ];
 
 const RootLayout = () => (

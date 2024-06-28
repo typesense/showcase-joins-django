@@ -6,6 +6,7 @@ import RootLayout from "./routes/layout";
 import Team from "./routes/team";
 import TeamDetails from "./routes/team-details";
 import ErrorPage from "./error-page";
+import Circuit from "./routes/circuit";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "/drivers",
         element: <Driver />,
+      },
+      {
+        path: "/circuits",
+        element: <Circuit />,
       },
       {
         path: "/drivers/:id",
