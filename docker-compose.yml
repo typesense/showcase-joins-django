@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+        - '${FORWARD_DATABASE_PORT:-5432}:5432'
+    environment:
+        PGPASSWORD: '${DATABASE_PASSWORD:-secret}'
+        POSTGRES_DB: '${DATABASE_NAME}'
+        POSTGRES_USER: '${DATABASE_USERNAME}'
+        POSTGRES_PASSWORD: '${DATABASE_PASSWORD:-secret}'
+
+  typesense:
+    image: typesense/typesense:26.0
+    restart: on-failure
+    ports:
+        - '${FORWARD_TYPESENSE_PORT:-8108}:8108'
+    environment:
+        TYPESENSE_DATA_DIR: '${TYPESENSE_DATA_DIR:-/typesense-data}'
+        TYPESENSE_API_KEY: '${TYPESENSE_API_KEY:-xyz}'
+        TYPESENSE_ENABLE_CORS: '${TYPESENSE_ENABLE_CORS:-true}'
+    volumes:
+      - ./typesense-data:/data
+    command: '--data-dir /data ----enable-cors'
+
+volumes:
+  postgres_data:
+  typesense:
+
