@@ -1,5 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Driver from "./routes/driver";
+import DriverDetails from "./routes/driver-details";
+import HomePage from "./routes/home";
+import RootLayout from "./routes/layout";
+import ErrorPage from "./error-page";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -12,6 +16,10 @@ const router = createBrowserRouter([
       {
         path: "/drivers",
         element: <Driver />,
+      },
+      {
+        path: "/drivers/:id",
+        element: <DriverDetails />,
       },
     ],
   },
