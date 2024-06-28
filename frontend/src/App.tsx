@@ -7,6 +7,7 @@ import Team from "./routes/team";
 import TeamDetails from "./routes/team-details";
 import ErrorPage from "./error-page";
 import Circuit from "./routes/circuit";
+import CircuitDetails from "./routes/circuit-details";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/circuits",
         element: <Circuit />,
+      },
+      {
+        path: "/circuits/:id",
+        element: <CircuitDetails />,
       },
       {
         path: "/drivers/:id",
