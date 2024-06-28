@@ -6,7 +6,10 @@ from dateutil.parser import parse
 from django.apps import AppConfig, apps
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
+
+from common.util.typesense_utils import instance_to_document
 
 
 class ResultsConfig(AppConfig):
@@ -127,9 +130,43 @@ class ResultsConfig(AppConfig):
         for model in model_list:
             collection_name = model.__name__.lower()
             try:
-                collection = self.client.collections[collection_name].retrieve()
-                print(f"Collection {collection_name} already exists")
-            # If the collection does not exist, create it
-            except:
+                self.client.collections[collection_name].retrieve()
+            except typesense.exceptions.ObjectNotFound:
                 print(f"Creating collection {collection_name}...")
                 self.client.collections.create(model_to_schema(model))
+
+            post_save.connect(receiver=update_document, sender=model)
+            post_delete.connect(receiver=delete_document, sender=model)
+
+
+@receiver(post_save)
+def update_document(sender, instance, **kwargs):
+    document = instance_to_document(instance)
+    collection_name = sender.__name__.lower()
+    model_list = apps.get_app_config("results").models
+
+    if sender.__name__.lower() not in model_list:
+        print("not")
+        return
+
+    client = apps.get_app_config("results").client
+    try:
+        client.collections[collection_name].retrieve()
+    except typesense.exceptions.ObjectNotFound:
+        print(
+            f"Collection {collection_name} does not exist. Skipping upsert operation."
+        )
+        return
+    client.collections[collection_name].documents.upsert(document)
+
+
+@receiver(post_delete)
+def delete_document(sender, instance, **kwargs):
+    model_list = apps.get_app_config("results").models
+    if sender.__name__.lower() not in model_list:
+
+        return
+    document_id = str(instance.pk)
+    collection_name = sender.__name__.lower()
+    client = apps.get_app_config("results").client
+    client.collections[collection_name].documents[document_id].delete()
