@@ -5,6 +5,9 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("circuit/", views.CircuitList.as_view()),
+    path("circuit/<int:pk>/", views.CircuitDetail.as_view()),
+    path("circuit/search", views.CircuitSearch.as_view()),
     path("driver/", views.DriverList.as_view()),
     path("driver/search", views.DriverSearch.as_view()),
     path("driver/<int:pk>/", views.DriverDetail.as_view()),

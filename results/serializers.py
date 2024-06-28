@@ -1,6 +1,43 @@
 from rest_framework import serializers
 
-from .models import Driver
+from .models import Circuit, Driver
+
+
+class CircuitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Circuit
+        fields = [
+            "id",
+            "ref",
+            "name",
+            "location",
+            "country",
+            "lat",
+            "lng",
+            "alt",
+            "url",
+        ]
+
+    def create(self, validated_data):
+        """
+        Create and return a new `Circuit` instance, given the validated data.
+        """
+        return Circuit.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        """
+        Update and return an existing `Driver` instance, given the validated data.
+        """
+        instance.name = validated_data.get("name", instance.name)
+        instance.ref = validated_data.get("ref", instance.ref)
+        instance.location = validated_data.get("location", instance.location)
+        instance.country = validated_data.get("country", instance.country)
+        instance.lat = validated_data.get("lat", instance.lat)
+        instance.lng = validated_data.get("lng", instance.lng)
+        instance.alt = validated_data.get("alt", instance.alt)
+        instance.url = validated_data.get("url", instance.url)
+        instance.save()
+        return instance
 
 
 class DriverSerializer(serializers.ModelSerializer):

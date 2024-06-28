@@ -4,8 +4,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Driver
-from .serializers import DriverSerializer
+from .models import Circuit, Driver
+from .serializers import CircuitSerializer, DriverSerializer
 
 
 def get_query_parameters(request):
@@ -79,6 +79,36 @@ def validate_sort_parameters(parameters, sortable_fields):
 
 def search_documents(client, collection_name, parameters):
     return client.collections[collection_name].documents.search(parameters)
+
+
+class CircuitSearch(APIView):
+    client = apps.get_app_config("results").client
+
+    def get(self, request):
+        try:
+            parameters = get_query_parameters(request)
+            collection = self.client.collections["circuit"].retrieve()
+            fields = collection["fields"]
+
+            validate_query_parameters(parameters, fields)
+            sortable_fields = get_sortable_fields(fields)
+            validate_sort_parameters(parameters, sortable_fields)
+
+            result = search_documents(self.client, "circuit", parameters)
+
+            return Response(result)
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CircuitList(generics.ListAPIView):
+    queryset = Circuit.objects.all()
+    serializer_class = CircuitSerializer
+
+
+class CircuitDetail(generics.RetrieveAPIView):
+    queryset = Circuit.objects.all()
+    serializer_class = CircuitSerializer
 
 
 class DriverSearch(APIView):
