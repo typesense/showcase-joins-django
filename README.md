@@ -7,12 +7,20 @@ This is a demo that shows how you can use [Typesense](https://github.com/typesen
 The app was built using [Django](https://www.djangoproject.com/), utilizing the [Django REST framework](https://www.django-rest-framework.org/) for the backend, along with the <a href="https://github.com/typesense/typesense-instantsearch-adapter" target="_blank">
 Typesense Adapter for instantsearchjs</a>, and a [Vite](https://vitejs.dev/) bundled React frontend, with routing from [React Router](https://reactrouter.com/en/main).
 
+## Repo Structure
+
+- `common/util/typesense_util.py` inlcudes a helper function to transform Django model instances into Typesense documents.
+- `results/management/commands/source_db` includes a custom [_django-admin_ command](https://docs.djangoproject.com/en/5.0/howto/custom-management-commands/) to source the database.
+- `results/management/commands/index_typesense` includes a custom [_django-admin_ command](https://docs.djangoproject.com/en/5.0/howto/custom-management-commands/) to index Typesense with the database data.
+- `frontend` contains the React frontend.
+- `frontend/src/components/instantsearch` contains the custom [Instantsearch](https://github.com/algolia/instantsearch) React components.
+
 ## Development
 
 To run this project locally, check out the `.env.example` file for the environment variables you'll need to configure, install the dependencies and start the Docker image, index the dataset and start the development server.
 
 ```shell
-# Create the virtual python environment 
+# Create the virtual python environment
 python -m venv venv
 
 # Activate the virtual environment
@@ -52,8 +60,8 @@ You can also access `http://localhost:8000` to access the Django API. For a list
 
 There's a simple `post_save` and `post_delete` [signal configuration](https://docs.djangoproject.com/en/5.0/ref/signals/#post-save) setup, in order for auto-indexing newly created/updated or deleted records in Typesense.
 
-For more information, please consult the [Typesense Documentation](https://typesense.org/docs/). 
+For more information, please consult the [Typesense Documentation](https://typesense.org/docs/).
 
 ## Credits
 
-The dataset used in this showcase is from  [The Ergast API's](http://ergast.com/mrd/) public dataset of Formula One races.
+The dataset used in this showcase is from [The Ergast API's](http://ergast.com/mrd/) public dataset of Formula One races.
